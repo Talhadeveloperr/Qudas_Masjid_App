@@ -134,7 +134,7 @@ class _ContributionsScreenState extends State<ContributionsScreen> {
                           },
                         )
                       : Text(
-                          "Page Total: \$${_totalAmount.toStringAsFixed(2)}",
+                          "Page Total: \Rs ${_totalAmount.toStringAsFixed(2)}",
                           style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                         ),
                 ),
@@ -194,7 +194,7 @@ class _ContributionsScreenState extends State<ContributionsScreen> {
                                 mainAxisSize: MainAxisSize.min,
                                 children: [
                                   Text(
-                                    "\$${item.amount.toStringAsFixed(2)}",
+                                    "\Rs ${item.amount.toStringAsFixed(2)}",
                                     style: TextStyle(
                                       color: Theme.of(context).primaryColor,
                                       fontWeight: FontWeight.bold,

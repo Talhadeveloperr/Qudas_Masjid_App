@@ -200,7 +200,7 @@ class _ContributorsScreenState extends State<ContributorsScreen> {
                                 ).then((_) => _fetchData());
                               },
                               title: Text(item.fullName, style: const TextStyle(fontWeight: FontWeight.bold)),
-                              subtitle: Text("Commitment: \$${item.monthlyCommitment.toStringAsFixed(2)}\nPhones: $phoneDisplay"),
+                              subtitle: Text("Commitment: \Rs ${item.monthlyCommitment.toStringAsFixed(2)}\nPhones: $phoneDisplay"),
                               isThreeLine: true,
                               trailing: Row(
                                 mainAxisSize: MainAxisSize.min,

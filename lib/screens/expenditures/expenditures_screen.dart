@@ -134,7 +134,7 @@ class _ExpendituresScreenState extends State<ExpendituresScreen> {
                           },
                         )
                       : Text(
-                          "Page Total: \$${_totalAmount.toStringAsFixed(2)}",
+                          "Page Total: \Rs ${_totalAmount.toStringAsFixed(2)}",
                           style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                         ),
                 ),
@@ -198,7 +198,7 @@ class _ExpendituresScreenState extends State<ExpendituresScreen> {
                                 mainAxisSize: MainAxisSize.min,
                                 children: [
                                   Text(
-                                    "\$${item.paymentAmount.toStringAsFixed(2)}",
+                                    "\Rs ${item.paymentAmount.toStringAsFixed(2)}",
                                     style: TextStyle(
                                       color: Theme.of(context).primaryColor,
                                       fontWeight: FontWeight.bold,

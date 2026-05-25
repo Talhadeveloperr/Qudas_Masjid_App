@@ -124,7 +124,7 @@ class _AddContributorScreenState extends State<AddContributorScreen> {
                   TextFormField(
                     controller: _commitmentController,
                     keyboardType: const TextInputType.numberWithOptions(decimal: true),
-                    decoration: const InputDecoration(labelText: "Monthly Commitment Amount (\$)", border: OutlineInputBorder()),
+                    decoration: const InputDecoration(labelText: "Monthly Commitment Amount (\Rs)", border: OutlineInputBorder()),
                     validator: (v) {
                       if (v == null || v.trim().isEmpty) return "Amount required";
                       if (double.tryParse(v) == null) return "Enter valid number";

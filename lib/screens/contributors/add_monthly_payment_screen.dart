@@ -121,7 +121,7 @@ class _AddMonthlyPaymentScreenState extends State<AddMonthlyPaymentScreen> {
                   TextFormField(
                     controller: _amountController,
                     keyboardType: const TextInputType.numberWithOptions(decimal: true),
-                    decoration: const InputDecoration(labelText: "Payment Amount Received (\$)", border: OutlineInputBorder()),
+                    decoration: const InputDecoration(labelText: "Payment Amount Received (\Rs)", border: OutlineInputBorder()),
                     validator: (v) => (v == null || double.tryParse(v) == null) ? "Valid receipt amount context required" : null,
                   ),
                   const SizedBox(height: 16),

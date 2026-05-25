@@ -105,7 +105,7 @@ class ContributorService {
 
   // --- Intelligence Engine Layer ---
   Future<Map<String, dynamic>> getAnalyticsForMonth(String monthStr) async {
-    final allContributorsRes = await _client.from('contributors').select('id, full_name, monthly_commitment');
+    final allContributorsRes = await _client.from('contributors').select('id, full_name, monthly_commitment, contributor_phone_numbers(phone_number)');
     final paymentsRes = await _client.from('contributors_payments').select().eq('month_paid', monthStr);
 
     final List<dynamic> contributors = allContributorsRes as List;
@@ -129,6 +129,11 @@ class ContributorService {
       double commitment = (c['monthly_commitment'] as num?)?.toDouble() ?? 0.0;
       totalCommitted += commitment;
 
+      List<String> phones = [];
+      if (c['contributor_phone_numbers'] != null) {
+        phones = (c['contributor_phone_numbers'] as List).map((p) => p['phone_number'].toString()).toList();
+      }
+
       if (paymentMap.containsKey(id)) {
         double paidAmount = paymentMap[id]!.fold(0.0, (sum, item) => sum + (item['amount'] as num).toDouble());
         totalCollected += paidAmount;
@@ -137,6 +142,7 @@ class ContributorService {
           'name': name,
           'committed': commitment,
           'paid': paidAmount,
+          'phones': phones,
         });
       } else {
         remainingList.add({
@@ -144,6 +150,7 @@ class ContributorService {
           'name': name,
           'committed': commitment,
           'paid': 0.0,
+          'phones': phones,
         });
       }
     }

@@ -85,7 +85,7 @@ class _ContributorProfileScreenState extends State<ContributorProfileScreen> {
                 children: [
                   Text("Address: ${widget.contributor.address ?? 'N/A'}", style: const TextStyle(fontSize: 14)),
                   const SizedBox(height: 8),
-                  Text("Committed Base: \$${widget.contributor.monthlyCommitment.toStringAsFixed(2)} / month",
+                  Text("Committed Base: \Rs ${widget.contributor.monthlyCommitment.toStringAsFixed(2)} / month",
                       style: const TextStyle(fontSize: 15, fontWeight: FontWeight.bold, color: Colors.teal)),
                   const SizedBox(height: 8),
                   Text("Configured Vectors: ${widget.contributor.phoneNumbers.join(', ')}", style: const TextStyle(fontSize: 13, color: Colors.grey)),
@@ -126,7 +126,7 @@ class _ContributorProfileScreenState extends State<ContributorProfileScreen> {
                           final payment = _payments[index];
                           return ListTile(
                             leading: const Icon(Icons.monetization_on, color: Colors.green),
-                            title: Text("\$${payment.amount.toStringAsFixed(2)} - ${payment.monthPaid}"),
+                            title: Text("\Rs ${payment.amount.toStringAsFixed(2)} - ${payment.monthPaid}"),
                             subtitle: Text("Date: ${payment.contributionDate} @ ${payment.contributionTime}\nRemarks: ${payment.remarks ?? 'None'}"),
                             trailing: Row(
                               mainAxisSize: MainAxisSize.min,

@@ -42,7 +42,7 @@ class ExpenditureDetailScreen extends StatelessWidget {
                 const SizedBox(height: 20),
                 const Text("Payment Amount", style: TextStyle(color: Colors.grey, fontSize: 14)),
                 Text(
-                  "\$${expenditure.paymentAmount.toStringAsFixed(2)}",
+                  "\Rs ${expenditure.paymentAmount.toStringAsFixed(2)}",
                   style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold, color: Theme.of(context).primaryColor),
                 ),
                 const SizedBox(height: 20),

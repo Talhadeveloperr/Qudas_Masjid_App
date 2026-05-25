@@ -43,7 +43,7 @@ class ContributionDetailScreen extends StatelessWidget {
                 const SizedBox(height: 20),
                 const Text("Amount Contributed", style: TextStyle(color: Colors.grey, fontSize: 14)),
                 Text(
-                  "\$${contribution.amount.toStringAsFixed(2)}",
+                  "\Rs ${contribution.amount.toStringAsFixed(2)}",
                   style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold, color: Theme.of(context).primaryColor),
                 ),
                 const SizedBox(height: 20),
