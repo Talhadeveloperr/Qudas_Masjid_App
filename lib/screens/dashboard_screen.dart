@@ -1,12 +1,11 @@
 //qudas\lib\screens\dashboard_screen.dart
+// qudas/lib/screens/dashboard_screen.dart
 import 'package:flutter/material.dart';
 
-import '../services/session_service.dart';
-import 'admin/admin_panel_screen.dart';
-import 'login_screen.dart';
+import '../widgets/sidebar_routes.dart';
+import '../widgets/bottom_navigation_link.dart';
 
-class DashboardScreen extends StatelessWidget {
-
+class DashboardScreen extends StatefulWidget {
   final Map<String, dynamic> user;
 
   const DashboardScreen({
@@ -15,96 +14,101 @@ class DashboardScreen extends StatelessWidget {
   });
 
   @override
-  Widget build(BuildContext context) {
+  State<DashboardScreen> createState() => _DashboardScreenState();
+}
 
-    final modules = user['module_access'] as List;
+class _DashboardScreenState extends State<DashboardScreen> {
+  int _currentIndex = 0;
+
+  // This function handles the bottom navigation taps
+  void _onTabTapped(int index) {
+    setState(() {
+      _currentIndex = index;
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    // Array of screens to display based on bottom nav selection
+    // You will replace the placeholders with actual screens later
+    final List<Widget> pages = [
+      _buildHomeContent(), // Index 0: Home/Dashboard
+      const Center(child: Text("Contributions Module (Coming Soon)")), // Index 1
+      const Center(child: Text("Expenditures Module (Coming Soon)")), // Index 2
+    ];
 
     return Scaffold(
-
       appBar: AppBar(
-        title: Text(
-          "Welcome ${user['username']}",
+        title: const Text("Masjid App"),
+        elevation: 0,
+        // The drawer automatically adds a hamburger icon here.
+      ),
+      
+      // Injecting the custom Sidebar widget
+      drawer: AppSidebar(user: widget.user),
+      
+      // Displays the current selected page
+      body: pages[_currentIndex],
+      
+      // Injecting the custom Bottom Navigation setup
+      bottomNavigationBar: BottomNavigationBar(
+        currentIndex: _currentIndex,
+        onTap: _onTabTapped,
+        selectedItemColor: Colors.green, // Primary Theme Color
+        unselectedItemColor: Colors.grey,
+        items: bottomNavigationItems,
+      ),
+    );
+  }
+
+  // Your original dashboard content moved to a helper widget for the "Home" tab
+  Widget _buildHomeContent() {
+    final modules = widget.user['module_access'] as List;
+
+    return ListView(
+      padding: const EdgeInsets.all(20),
+      children: [
+        Text(
+          "Welcome ${widget.user['username']}",
+          style: const TextStyle(
+            fontSize: 24,
+            fontWeight: FontWeight.bold,
+          ),
         ),
-
-        actions: [
-
-          if (user['role'] == 'admin')
-
-            IconButton(
-              icon: const Icon(Icons.admin_panel_settings),
-
-              onPressed: () {
-
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (_) => const AdminPanelScreen(),
-                  ),
-                );
-              },
-            ),
-
-          IconButton(
-            icon: const Icon(Icons.logout),
-
-            onPressed: () async {
-
-              await SessionService.logout();
-
-              Navigator.pushAndRemoveUntil(
-                context,
-                MaterialPageRoute(
-                  builder: (_) => const LoginScreen(),
-                ),
-                    (route) => false,
-              );
-            },
+        const SizedBox(height: 10),
+        Text(
+          "Role: ${widget.user['role']}".toUpperCase(),
+          style: TextStyle(
+            fontSize: 14,
+            fontWeight: FontWeight.bold,
+            color: widget.user['role'] == 'admin' ? Colors.red : Colors.blue,
           ),
-        ],
-      ),
-
-      body: ListView(
-        padding: const EdgeInsets.all(20),
-
-        children: [
-
-          Text(
-            "Role: ${user['role']}",
-            style: const TextStyle(
-              fontSize: 22,
-              fontWeight: FontWeight.bold,
-            ),
+        ),
+        const SizedBox(height: 30),
+        const Text(
+          "Your Module Access",
+          style: TextStyle(
+            fontSize: 18,
+            fontWeight: FontWeight.w600,
           ),
-
-          const SizedBox(height: 20),
-
-          const Text(
-            "Module Access",
-            style: TextStyle(
-              fontSize: 18,
+        ),
+        const SizedBox(height: 10),
+        ...modules.map((module) {
+          return Card(
+            elevation: 2,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(12),
             ),
-          ),
-
-          const SizedBox(height: 10),
-
-          ...modules.map((module) {
-
-            return Card(
-              child: ListTile(
-                title: Text(
-                  module['module_name'],
-                ),
-                trailing: Icon(
-                  module['is_allowed']
-                      ? Icons.check_circle
-                      : Icons.cancel,
-                ),
+            child: ListTile(
+              title: Text(module['module_name'].toString().toUpperCase()),
+              trailing: Icon(
+                module['is_allowed'] ? Icons.check_circle : Icons.cancel,
+                color: module['is_allowed'] ? Colors.green : Colors.red,
               ),
-            );
-
-          }).toList(),
-        ],
-      ),
+            ),
+          );
+        }).toList(),
+      ],
     );
   }
 }
