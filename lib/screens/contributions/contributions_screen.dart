@@ -2,11 +2,15 @@
 // qudas/lib/screens/contributions/contributions_screen.dart
 import 'package:flutter/material.dart';
 import '../../models/contribution_model.dart';
+import '../../models/app_user.dart';
 import '../../services/contribution_service.dart';
+import '../../utils/app_permissions.dart'; // Import permissions check
 import 'add_contribution_screen.dart';
 
 class ContributionsScreen extends StatefulWidget {
-  const ContributionsScreen({super.key});
+  final AppUser currentUser;
+
+  const ContributionsScreen({super.key, required this.currentUser});
 
   @override
   State<ContributionsScreen> createState() => _ContributionsScreenState();
@@ -30,6 +34,17 @@ class _ContributionsScreenState extends State<ContributionsScreen> {
   void initState() {
     super.initState();
     _fetchData();
+  }
+
+  // Helper method to check if current user has a specific permission
+  bool _hasPermission(String permissionName) {
+    if (widget.currentUser.role == 'admin') return true; // Admin has all access
+    for (var module in widget.currentUser.modules) {
+      if (module['module_name'] == permissionName && module['is_allowed'] == true) {
+        return true;
+      }
+    }
+    return false;
   }
 
   Future<void> _fetchData() async {
@@ -91,6 +106,11 @@ class _ContributionsScreenState extends State<ContributionsScreen> {
 
   @override
   Widget build(BuildContext context) {
+    // Only show FAB if user has 'add_contributions' permission
+    final canAdd = _hasPermission(AppPermissions.addContributions);
+    final canEdit = _hasPermission(AppPermissions.editContributions);
+    final canDelete = _hasPermission(AppPermissions.deleteContributions);
+
     return Scaffold(
       body: Column(
         children: [
@@ -109,7 +129,6 @@ class _ContributionsScreenState extends State<ContributionsScreen> {
                             border: InputBorder.none,
                           ),
                           onChanged: (_) {
-                            // Reset pagination on new search
                             setState(() => _currentPage = 0);
                             _fetchData();
                           },
@@ -126,18 +145,18 @@ class _ContributionsScreenState extends State<ContributionsScreen> {
                       _isSearching = !_isSearching;
                       if (!_isSearching) {
                         _searchController.clear();
-                        _currentPage = 0; // Reset pagination when closing search
+                        _currentPage = 0;
                         _fetchData();
                       }
                     });
                   },
                 ),
-                  IconButton(
-                    icon: const Icon(Icons.refresh),
-                    onPressed: () {
-                      _fetchData(); // Refresh current page
-                    },
-                  ),
+                IconButton(
+                  icon: const Icon(Icons.refresh),
+                  onPressed: () {
+                    _fetchData();
+                  },
+                ),
               ],
             ),
           ),
@@ -183,22 +202,24 @@ class _ContributionsScreenState extends State<ContributionsScreen> {
                                     ),
                                   ),
                                   const SizedBox(width: 8),
-                                  IconButton(
-                                    icon: const Icon(Icons.edit, color: Colors.blue, size: 20),
-                                    onPressed: () async {
-                                      await Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                          builder: (_) => AddContributionScreen(contribution: item),
-                                        ),
-                                      );
-                                      _fetchData();
-                                    },
-                                  ),
-                                  IconButton(
-                                    icon: const Icon(Icons.delete, color: Colors.red, size: 20),
-                                    onPressed: () => _confirmDelete(item.id!),
-                                  ),
+                                  if (canEdit)
+                                    IconButton(
+                                      icon: const Icon(Icons.edit, color: Colors.blue, size: 20),
+                                      onPressed: () async {
+                                        await Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (_) => AddContributionScreen(contribution: item),
+                                          ),
+                                        );
+                                        _fetchData();
+                                      },
+                                    ),
+                                  if (canDelete)
+                                    IconButton(
+                                      icon: const Icon(Icons.delete, color: Colors.red, size: 20),
+                                      onPressed: () => _confirmDelete(item.id!),
+                                    ),
                                 ],
                               ),
                             ),
@@ -206,21 +227,23 @@ class _ContributionsScreenState extends State<ContributionsScreen> {
                         },
                       ),
           ),
-
         ],
       ),
-      floatingActionButton: FloatingActionButton(
-        backgroundColor: Theme.of(context).primaryColor,
-        foregroundColor: Colors.white,
-        child: const Icon(Icons.add),
-        onPressed: () async {
-          await Navigator.push(
-            context,
-            MaterialPageRoute(builder: (_) => const AddContributionScreen()),
-          );
-          _fetchData();
-        },
-      ),
+      // Conditionally render the Floating Action Button based on permissions
+      floatingActionButton: canAdd
+          ? FloatingActionButton(
+              backgroundColor: Theme.of(context).primaryColor,
+              foregroundColor: Colors.white,
+              child: const Icon(Icons.add),
+              onPressed: () async {
+                await Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (_) => const AddContributionScreen()),
+                );
+                _fetchData();
+              },
+            )
+          : null,
     );
   }
 

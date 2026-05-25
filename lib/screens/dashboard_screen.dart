@@ -7,6 +7,7 @@ import '../widgets/bottom_navigation_link.dart';
 // Import your new screens here
 import 'contributions/contributions_screen.dart';
 import 'expenditures/expenditures_screen.dart';
+import '../models/app_user.dart';
 
 class DashboardScreen extends StatefulWidget {
   final Map<String, dynamic> user;
@@ -36,7 +37,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
     // The indices map directly to the bottomNavigationItems list
     final List<Widget> pages = [
       _buildHomeContent(),                 // Index 0: Home/Dashboard
-      const ContributionsScreen(),         // Index 1: Contributions
+      ContributionsScreen(currentUser: AppUser.fromJson(widget.user)),         // Index 1: Contributions
       const ExpendituresScreen(),          // Index 2: Expenditures
     ];
 
