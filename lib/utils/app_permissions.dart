@@ -11,7 +11,7 @@ class AppPermissions {
 
   static const String expenditures = "expenditures";
 
-  // --- Granular Contribution Permissions ---
+  // --- Granular expenditures Permissions ---
   static const String addExpenditures = "add_expenditures";
   static const String editExpenditures = "edit_expenditures";
   static const String deleteExpenditures = "delete_expenditures";
@@ -31,6 +31,9 @@ class AppPermissions {
     editContributions,
     deleteContributions,
     expenditures,
+    addExpenditures,
+    editExpenditures,
+    deleteExpenditures,
     financeAnalytics,
     users,
     bills,

@@ -1,5 +1,6 @@
 //qudas\lib\screens\admin\user_list_screen.dart
 // qudas/lib/screens/admin/user_list_screen.dart
+// qudas/lib/screens/admin/user_list_screen.dart
 import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import '../../utils/app_permissions.dart';
@@ -25,6 +26,10 @@ class _UserListScreenState extends State<UserListScreen> {
   Future<void> _fetchUsers() async {
     setState(() => _isLoading = true);
     try {
+      print('🚀 --- SUPABASE REQUEST: FETCH USERS ---');
+      print('Table: app_users');
+      print('Query: select(id, username, role, module_access(module_name, is_allowed))');
+
       final response = await Supabase.instance.client
           .from('app_users')
           .select('''
@@ -38,10 +43,15 @@ class _UserListScreenState extends State<UserListScreen> {
           ''')
           .order('id', ascending: true);
 
+      print('✅ --- SUPABASE RESPONSE: FETCH USERS ---');
+      print('Data: $response');
+
       setState(() {
         _users = response;
       });
     } catch (e) {
+      print('❌ --- SUPABASE ERROR: FETCH USERS ---');
+      print('Error: $e');
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(content: Text("Error: $e"), backgroundColor: Colors.red));
@@ -54,13 +64,30 @@ class _UserListScreenState extends State<UserListScreen> {
   // Assign a new permission to a user
   Future<void> _assignPermission(int userId, String moduleName) async {
     try {
-      await Supabase.instance.client.from('module_access').insert({
+      final requestPayload = {
         'user_id': userId,
         'module_name': moduleName,
         'is_allowed': true,
-      });
+      };
+
+      print('🚀 --- SUPABASE REQUEST: ASSIGN PERMISSION ---');
+      print('Table: module_access');
+      print('Action: insert');
+      print('Payload: $requestPayload');
+
+      // Added .select() to get the newly inserted row back in the response
+      final response = await Supabase.instance.client
+          .from('module_access')
+          .insert(requestPayload)
+          .select();
+
+      print('✅ --- SUPABASE RESPONSE: ASSIGN PERMISSION ---');
+      print('Data: $response');
+
       _fetchUsers(); // Refresh the list
     } catch (e) {
+      print('❌ --- SUPABASE ERROR: ASSIGN PERMISSION ---');
+      print('Error: $e');
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(content: Text("Failed to assign permission: $e")));
@@ -71,12 +98,27 @@ class _UserListScreenState extends State<UserListScreen> {
   // Remove a permission from a user
   Future<void> _removePermission(int userId, String moduleName) async {
     try {
-      await Supabase.instance.client
+      final matchCriteria = {'user_id': userId, 'module_name': moduleName};
+
+      print('🚀 --- SUPABASE REQUEST: REMOVE PERMISSION ---');
+      print('Table: module_access');
+      print('Action: delete');
+      print('Match Criteria: $matchCriteria');
+
+      // Added .select() to get the deleted row back in the response
+      final response = await Supabase.instance.client
           .from('module_access')
           .delete()
-          .match({'user_id': userId, 'module_name': moduleName});
+          .match(matchCriteria)
+          .select();
+
+      print('✅ --- SUPABASE RESPONSE: REMOVE PERMISSION ---');
+      print('Data: $response');
+
       _fetchUsers(); // Refresh the list
     } catch (e) {
+      print('❌ --- SUPABASE ERROR: REMOVE PERMISSION ---');
+      print('Error: $e');
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(content: Text("Failed to remove permission: $e")));
