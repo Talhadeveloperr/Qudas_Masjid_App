@@ -16,4 +16,8 @@ const List<BottomNavigationBarItem> bottomNavigationItems = [
     icon: Icon(Icons.account_balance_wallet),
     label: 'Expenditures',
   ),
+  BottomNavigationBarItem(
+    icon: Icon(Icons.account_balance_wallet),
+    label: 'Contributors',
+  ),
 ];

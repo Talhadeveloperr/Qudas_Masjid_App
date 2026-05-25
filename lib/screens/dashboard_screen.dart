@@ -7,6 +7,7 @@ import '../widgets/bottom_navigation_link.dart';
 // Import your new screens here
 import 'contributions/contributions_screen.dart';
 import 'expenditures/expenditures_screen.dart';
+import 'contributors/contributors_screen.dart';
 import '../models/app_user.dart';
 
 class DashboardScreen extends StatefulWidget {
@@ -39,6 +40,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
       _buildHomeContent(),                 // Index 0: Home/Dashboard
       ContributionsScreen(currentUser: AppUser.fromJson(widget.user)),         // Index 1: Contributions
       ExpendituresScreen(currentUser: AppUser.fromJson(widget.user)),          // Index 2: Expenditures
+      ContributorsScreen(currentUser: AppUser.fromJson(widget.user)),           // Index 3: Contributors
     ];
 
     return Scaffold(
