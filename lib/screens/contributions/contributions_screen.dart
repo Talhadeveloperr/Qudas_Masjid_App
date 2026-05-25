@@ -19,6 +19,13 @@ class _ContributionsScreenState extends State<ContributionsScreen> {
   bool _isSearching = false;
   final TextEditingController _searchController = TextEditingController();
 
+  // --- Pagination Layer States ---
+  int _currentPage = 0;
+  final int _pageSize = 20;
+  bool _hasMore = true;
+  int _totalCount = 0;
+  int _totalPages = 1;
+
   @override
   void initState() {
     super.initState();
@@ -28,8 +35,21 @@ class _ContributionsScreenState extends State<ContributionsScreen> {
   Future<void> _fetchData() async {
     setState(() => _isLoading = true);
     try {
-      final data = await _service.getContributions(searchQuery: _searchController.text);
-      setState(() => _contributions = data);
+      final data = await _service.getContributions(
+        searchQuery: _searchController.text,
+        page: _currentPage,
+        limit: _pageSize,
+      );
+      final count = await _service.getTotalContributionsCount(
+        searchQuery: _searchController.text,
+      );
+      setState(() {
+        _contributions = data;
+        _totalCount = count;
+        _totalPages = (_totalCount / _pageSize).ceil();
+        if (_totalPages == 0) _totalPages = 1;
+        _hasMore = _currentPage < _totalPages - 1;
+      });
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text("Error fetching records: $e"), backgroundColor: Colors.red),
@@ -88,10 +108,14 @@ class _ContributionsScreenState extends State<ContributionsScreen> {
                             hintText: "Search contributor name...",
                             border: InputBorder.none,
                           ),
-                          onChanged: (_) => _fetchData(),
+                          onChanged: (_) {
+                            // Reset pagination on new search
+                            setState(() => _currentPage = 0);
+                            _fetchData();
+                          },
                         )
                       : Text(
-                          "Total: \$${_totalAmount.toStringAsFixed(2)}",
+                          "Page Total: \$${_totalAmount.toStringAsFixed(2)}",
                           style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                         ),
                 ),
@@ -102,15 +126,18 @@ class _ContributionsScreenState extends State<ContributionsScreen> {
                       _isSearching = !_isSearching;
                       if (!_isSearching) {
                         _searchController.clear();
+                        _currentPage = 0; // Reset pagination when closing search
                         _fetchData();
                       }
                     });
                   },
                 ),
-                IconButton(
-                  icon: const Icon(Icons.refresh),
-                  onPressed: _fetchData,
-                ),
+                  IconButton(
+                    icon: const Icon(Icons.refresh),
+                    onPressed: () {
+                      _fetchData(); // Refresh current page
+                    },
+                  ),
               ],
             ),
           ),
@@ -118,11 +145,20 @@ class _ContributionsScreenState extends State<ContributionsScreen> {
             child: _isLoading
                 ? const Center(child: CircularProgressIndicator())
                 : _contributions.isEmpty
-                    ? const Center(child: Text("No contribution entries found."))
+                    ? Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          const Text("No contribution entries found."),
+                          if (_currentPage > 0) _buildPaginationUI(),
+                        ],
+                      )
                     : ListView.builder(
                         padding: const EdgeInsets.all(12),
-                        itemCount: _contributions.length,
+                        itemCount: _contributions.length + 1,
                         itemBuilder: (context, index) {
+                          if (index == _contributions.length) {
+                            return _buildPaginationUI();
+                          }
                           final item = _contributions[index];
                           return Card(
                             margin: const EdgeInsets.symmetric(vertical: 6),
@@ -170,6 +206,7 @@ class _ContributionsScreenState extends State<ContributionsScreen> {
                         },
                       ),
           ),
+
         ],
       ),
       floatingActionButton: FloatingActionButton(
@@ -183,6 +220,42 @@ class _ContributionsScreenState extends State<ContributionsScreen> {
           );
           _fetchData();
         },
+      ),
+    );
+  }
+
+  Widget _buildPaginationUI() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 24.0),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          IconButton(
+            icon: const Icon(Icons.chevron_left),
+            onPressed: _currentPage > 0
+                ? () {
+                    setState(() => _currentPage--);
+                    _fetchData();
+                  }
+                : null,
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16.0),
+            child: Text(
+              "Page ${_currentPage + 1} of $_totalPages",
+              style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+            ),
+          ),
+          IconButton(
+            icon: const Icon(Icons.chevron_right),
+            onPressed: _hasMore
+                ? () {
+                    setState(() => _currentPage++);
+                    _fetchData();
+                  }
+                : null,
+          ),
+        ],
       ),
     );
   }

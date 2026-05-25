@@ -6,15 +6,34 @@ import '../models/contribution_model.dart';
 class ContributionService {
   final _client = Supabase.instance.client;
 
-  Future<List<Contribution>> getContributions({String searchQuery = ''}) async {
+  Future<List<Contribution>> getContributions({
+    String searchQuery = '',
+    int page = 0,
+    int limit = 20,
+  }) async {
     var query = _client.from('contributions').select();
 
     if (searchQuery.isNotEmpty) {
       query = query.ilike('contributor_name', '%$searchQuery%');
     }
 
-    final response = await query.order('id', ascending: false);
+    // Calculate pagination range (0-indexed)
+    final from = page * limit;
+    final to = from + limit - 1;
+
+    // Apply ordering and range limit
+    final response = await query.order('id', ascending: false).range(from, to);
+    
     return (response as List).map((json) => Contribution.fromJson(json)).toList();
+  }
+
+  Future<int> getTotalContributionsCount({String searchQuery = ''}) async {
+    var query = _client.from('contributions').select('id');
+    if (searchQuery.isNotEmpty) {
+      query = query.ilike('contributor_name', '%$searchQuery%');
+    }
+    final response = await query;
+    return (response as List).length;
   }
 
   Future<void> addContribution(Contribution contribution) async {
