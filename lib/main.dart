@@ -4,9 +4,12 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 
 import 'config/supabase_config.dart';
 import 'screens/splash_screen.dart';
+import 'utils/app_colors.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  await AppTheme.initTheme();
 
   await Supabase.initialize(
     url: SupabaseConfig.supabaseUrl,
@@ -21,10 +24,16 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'Masjid App',
-      home: SplashScreen(),
+    return ValueListenableBuilder<AppThemeType>(
+      valueListenable: AppTheme.themeNotifier,
+      builder: (context, currentTheme, child) {
+        return MaterialApp(
+          debugShowCheckedModeBanner: false,
+          title: 'Masjid App',
+          theme: AppTheme.getThemeData(currentTheme),
+          home: const SplashScreen(),
+        );
+      },
     );
   }
 }

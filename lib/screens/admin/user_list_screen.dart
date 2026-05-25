@@ -148,9 +148,9 @@ class _UserListScreenState extends State<UserListScreen> {
                                     module['module_name'].toString(),
                                     style: const TextStyle(fontSize: 12),
                                   ),
-                                  backgroundColor: Colors.green.withOpacity(0.1),
+                                  backgroundColor: Theme.of(context).primaryColor.withOpacity(0.1),
                                   side: BorderSide.none,
-                                  avatar: const Icon(Icons.check_circle, size: 16, color: Colors.green),
+                                  avatar: Icon(Icons.check_circle, size: 16, color: Theme.of(context).primaryColor),
                                 );
                               }).toList(),
                             ),

@@ -4,6 +4,9 @@ import 'package:flutter/material.dart';
 
 import '../widgets/sidebar_routes.dart';
 import '../widgets/bottom_navigation_link.dart';
+// Import your new screens here
+import 'contributions/contributions_screen.dart';
+import 'expenditures/expenditures_screen.dart';
 
 class DashboardScreen extends StatefulWidget {
   final Map<String, dynamic> user;
@@ -30,11 +33,11 @@ class _DashboardScreenState extends State<DashboardScreen> {
   @override
   Widget build(BuildContext context) {
     // Array of screens to display based on bottom nav selection
-    // You will replace the placeholders with actual screens later
+    // The indices map directly to the bottomNavigationItems list
     final List<Widget> pages = [
-      _buildHomeContent(), // Index 0: Home/Dashboard
-      const Center(child: Text("Contributions Module (Coming Soon)")), // Index 1
-      const Center(child: Text("Expenditures Module (Coming Soon)")), // Index 2
+      _buildHomeContent(),                 // Index 0: Home/Dashboard
+      const ContributionsScreen(),         // Index 1: Contributions
+      const ExpendituresScreen(),          // Index 2: Expenditures
     ];
 
     return Scaffold(
@@ -47,14 +50,14 @@ class _DashboardScreenState extends State<DashboardScreen> {
       // Injecting the custom Sidebar widget
       drawer: AppSidebar(user: widget.user),
       
-      // Displays the current selected page
+      // Displays the current selected page from the array
       body: pages[_currentIndex],
       
       // Injecting the custom Bottom Navigation setup
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _currentIndex,
         onTap: _onTabTapped,
-        selectedItemColor: Colors.green, // Primary Theme Color
+        selectedItemColor: Theme.of(context).primaryColor, // Primary Theme Color
         unselectedItemColor: Colors.grey,
         items: bottomNavigationItems,
       ),
@@ -103,7 +106,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
               title: Text(module['module_name'].toString().toUpperCase()),
               trailing: Icon(
                 module['is_allowed'] ? Icons.check_circle : Icons.cancel,
-                color: module['is_allowed'] ? Colors.green : Colors.red,
+                color: module['is_allowed'] ? Theme.of(context).primaryColor : Colors.red,
               ),
             ),
           );

@@ -7,6 +7,7 @@ import '../screens/admin/create_user_screen.dart';
 import '../screens/admin/user_list_screen.dart';
 import '../screens/login_screen.dart';
 import '../services/session_service.dart';
+import '../utils/app_colors.dart';
 
 class AppSidebar extends StatelessWidget {
   final Map<String, dynamic> user;
@@ -23,12 +24,12 @@ class AppSidebar extends StatelessWidget {
         children: [
           // Header Section
           UserAccountsDrawerHeader(
-            decoration: const BoxDecoration(color: Colors.green),
-            accountName: Text(user['username'].toString().toUpperCase()),
-            accountEmail: Text("Role: ${user['role']}"),
-            currentAccountPicture: const CircleAvatar(
-              backgroundColor: Colors.white,
-              child: Icon(Icons.person, size: 40, color: Colors.green),
+            decoration: BoxDecoration(color: Theme.of(context).primaryColor),
+            accountName: Text(user['username'].toString().toUpperCase(), style: TextStyle(color: Theme.of(context).appBarTheme.foregroundColor ?? Colors.white)),
+            accountEmail: Text("Role: ${user['role']}", style: TextStyle(color: Theme.of(context).appBarTheme.foregroundColor ?? Colors.white)),
+            currentAccountPicture: CircleAvatar(
+              backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+              child: Icon(Icons.person, size: 40, color: Theme.of(context).primaryColor),
             ),
           ),
 
@@ -85,6 +86,36 @@ class AppSidebar extends StatelessWidget {
             ),
             const Divider(),
           ],
+
+          // Theme Settings Section
+          const Padding(
+            padding: EdgeInsets.only(left: 16, top: 8, bottom: 8),
+            child: Text(
+              "Theme Settings",
+              style: TextStyle(color: Colors.grey, fontWeight: FontWeight.bold),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16.0),
+            child: DropdownButtonHideUnderline(
+              child: DropdownButton<AppThemeType>(
+                value: AppTheme.themeNotifier.value,
+                isExpanded: true,
+                items: AppThemeType.values.map((AppThemeType type) {
+                  return DropdownMenuItem<AppThemeType>(
+                    value: type,
+                    child: Text(type.name.toUpperCase()),
+                  );
+                }).toList(),
+                onChanged: (AppThemeType? newValue) {
+                  if (newValue != null) {
+                    AppTheme.changeTheme(newValue);
+                  }
+                },
+              ),
+            ),
+          ),
+          const Divider(),
 
           // Logout Button
           ListTile(
