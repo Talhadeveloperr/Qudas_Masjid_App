@@ -38,7 +38,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
     final List<Widget> pages = [
       _buildHomeContent(),                 // Index 0: Home/Dashboard
       ContributionsScreen(currentUser: AppUser.fromJson(widget.user)),         // Index 1: Contributions
-      const ExpendituresScreen(),          // Index 2: Expenditures
+      ExpendituresScreen(currentUser: AppUser.fromJson(widget.user)),          // Index 2: Expenditures
     ];
 
     return Scaffold(

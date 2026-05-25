@@ -1,15 +1,17 @@
 // lib/screens/expenditures/expenditures_screen.dart
 // lib/screens/expenditures/expenditures_screen.dart
 import 'package:flutter/material.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
 import '../../models/expenditure_model.dart';
+import '../../models/app_user.dart'; // Import AppUser
 import '../../services/expenditure_service.dart';
-import '../../utils/app_permissions.dart'; // Import permissions
+import '../../utils/app_permissions.dart';
 import 'add_expenditure_screen.dart';
 import 'expenditure_detail_screen.dart';
 
 class ExpendituresScreen extends StatefulWidget {
-  const ExpendituresScreen({super.key});
+  final AppUser currentUser; // Added currentUser
+
+  const ExpendituresScreen({super.key, required this.currentUser});
 
   @override
   State<ExpendituresScreen> createState() => _ExpendituresScreenState();
@@ -22,11 +24,6 @@ class _ExpendituresScreenState extends State<ExpendituresScreen> {
   bool _isSearching = false;
   final TextEditingController _searchController = TextEditingController();
 
-  // --- Permissions Layer States ---
-  bool _canAdd = false;
-  bool _canEdit = false;
-  bool _canDelete = false;
-
   // --- Pagination Layer States ---
   int _currentPage = 0;
   final int _pageSize = 20;
@@ -37,51 +34,22 @@ class _ExpendituresScreenState extends State<ExpendituresScreen> {
   @override
   void initState() {
     super.initState();
-    _initializeScreen();
+    _fetchData(); // Just fetch data now
   }
 
-  // Initialize both permissions and data
-  Future<void> _initializeScreen() async {
-    setState(() => _isLoading = true);
-    await _fetchUserPermissions();
-    await _fetchData();
-  }
-
-  // Fetch the current user's role and permissions
-  Future<void> _fetchUserPermissions() async {
-    try {
-      final currentUser = Supabase.instance.client.auth.currentUser;
-      if (currentUser == null) return;
-
-      // Note: Adjust '.eq('id', ...)' if you match the user in 'app_users' using a different column (like 'auth_id')
-      final userData = await Supabase.instance.client
-          .from('app_users')
-          .select('role, module_access(module_name, is_allowed)')
-          .eq('id', currentUser.id) 
-          .maybeSingle();
-
-      if (userData != null) {
-        final role = userData['role'];
-        final modules = userData['module_access'] as List<dynamic>? ?? [];
-
-        final allowedModules = modules
-            .where((m) => m['is_allowed'] == true)
-            .map((m) => m['module_name'].toString())
-            .toList();
-
-        setState(() {
-          // Grant access if the user is an admin, otherwise check granular permissions
-          _canAdd = role == 'admin' || allowedModules.contains(AppPermissions.addExpenditures);
-          _canEdit = role == 'admin' || allowedModules.contains(AppPermissions.editExpenditures);
-          _canDelete = role == 'admin' || allowedModules.contains(AppPermissions.deleteExpenditures);
-        });
+  // Helper method to check if current user has a specific permission
+  bool _hasPermission(String permissionName) {
+    if (widget.currentUser.role == 'admin') return true; // Admin has all access
+    for (var module in widget.currentUser.modules) {
+      if (module['module_name'] == permissionName && module['is_allowed'] == true) {
+        return true;
       }
-    } catch (e) {
-      debugPrint("Failed to load permissions: $e");
     }
+    return false;
   }
 
   Future<void> _fetchData() async {
+    setState(() => _isLoading = true);
     try {
       final data = await _service.getExpenditures(
         searchQuery: _searchController.text,
@@ -239,8 +207,8 @@ class _ExpendituresScreenState extends State<ExpendituresScreen> {
                                   ),
                                   const SizedBox(width: 8),
                                   
-                                  // CONDITIONAL: Only show Edit button if user has permission
-                                  if (_canEdit)
+                                  // Use _hasPermission for editing
+                                  if (_hasPermission(AppPermissions.editExpenditures))
                                     IconButton(
                                       icon: const Icon(Icons.edit, color: Colors.blue, size: 20),
                                       onPressed: () async {
@@ -254,8 +222,8 @@ class _ExpendituresScreenState extends State<ExpendituresScreen> {
                                       },
                                     ),
                                     
-                                  // CONDITIONAL: Only show Delete button if user has permission
-                                  if (_canDelete)
+                                  // Use _hasPermission for deleting
+                                  if (_hasPermission(AppPermissions.deleteExpenditures))
                                     IconButton(
                                       icon: const Icon(Icons.delete, color: Colors.red, size: 20),
                                       onPressed: () => _confirmDelete(item.id!),
@@ -270,8 +238,8 @@ class _ExpendituresScreenState extends State<ExpendituresScreen> {
         ],
       ),
       
-      // CONDITIONAL: Only render FloatingActionButton if user has Add permission
-      floatingActionButton: _canAdd
+      // Use _hasPermission for adding
+      floatingActionButton: _hasPermission(AppPermissions.addExpenditures)
           ? FloatingActionButton(
               backgroundColor: Theme.of(context).primaryColor,
               foregroundColor: Colors.white,
@@ -284,7 +252,7 @@ class _ExpendituresScreenState extends State<ExpendituresScreen> {
                 _fetchData();
               },
             )
-          : null, // Returns null to hide the FAB completely
+          : null,
     );
   }
 
