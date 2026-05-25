@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Masjid Management - Bills &amp; Utilities</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Plus+Jakarta+Sans:wght@600;700;800&amp;family=JetBrains+Mono:wght@500&amp;family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "outline-variant": "#bec9bf",
+                        "inverse-on-surface": "#eaf1ff",
+                        "tertiary-fixed-dim": "#accbe0",
+                        "on-error": "#ffffff",
+                        "tertiary-fixed": "#c8e7fd",
+                        "surface-tint": "#086c41",
+                        "on-tertiary-fixed": "#001e2d",
+                        "surface-container": "#e5eeff",
+                        "tertiary-container": "#415f71",
+                        "error": "#ba1a1a",
+                        "on-secondary": "#ffffff",
+                        "on-surface-variant": "#3f4941",
+                        "primary-fixed-dim": "#82d8a3",
+                        "on-tertiary": "#ffffff",
+                        "tertiary": "#294759",
+                        "surface-container-lowest": "#ffffff",
+                        "primary-fixed": "#9ef5be",
+                        "on-primary-fixed": "#002110",
+                        "on-tertiary-container": "#b9d8ed",
+                        "surface-bright": "#f8f9ff",
+                        "primary": "#004e2d",
+                        "secondary": "#735c00",
+                        "outline": "#6f7a71",
+                        "surface-container-high": "#dce9ff",
+                        "on-background": "#0b1c30",
+                        "inverse-surface": "#213145",
+                        "on-secondary-fixed-variant": "#574500",
+                        "error-container": "#ffdad6",
+                        "on-secondary-container": "#745c00",
+                        "on-primary-fixed-variant": "#00522f",
+                        "surface-dim": "#cbdbf5",
+                        "surface-container-low": "#eff4ff",
+                        "surface-variant": "#d3e4fe",
+                        "inverse-primary": "#82d8a3",
+                        "on-primary-container": "#8fe6af",
+                        "on-surface": "#0b1c30",
+                        "on-primary": "#ffffff",
+                        "secondary-container": "#fed65b",
+                        "on-secondary-fixed": "#241a00",
+                        "secondary-fixed": "#ffe088",
+                        "on-tertiary-fixed-variant": "#2c4a5c",
+                        "background": "#f8f9ff",
+                        "on-error-container": "#93000a",
+                        "primary-container": "#00693e",
+                        "surface-container-highest": "#d3e4fe",
+                        "surface": "#f8f9ff",
+                        "secondary-fixed-dim": "#e9c349"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "base": "4px",
+                        "gutter": "16px",
+                        "xs": "4px",
+                        "md": "16px",
+                        "margin-tablet": "32px",
+                        "xxl": "48px",
+                        "margin-mobile": "16px",
+                        "lg": "24px",
+                        "xl": "32px",
+                        "sm": "8px"
+                    },
+                    "fontFamily": {
+                        "body-md": ["Inter"],
+                        "headline-lg-mobile": ["Plus Jakarta Sans"],
+                        "display-lg": ["Plus Jakarta Sans"],
+                        "headline-lg": ["Plus Jakarta Sans"],
+                        "title-lg": ["Plus Jakarta Sans"],
+                        "label-md": ["JetBrains Mono"],
+                        "body-lg": ["Inter"]
+                    },
+                    "fontSize": {
+                        "body-md": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                        "headline-lg-mobile": ["28px", {"lineHeight": "36px", "fontWeight": "600"}],
+                        "display-lg": ["40px", {"lineHeight": "48px", "letterSpacing": "-1px", "fontWeight": "700"}],
+                        "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.5px", "fontWeight": "600"}],
+                        "title-lg": ["22px", {"lineHeight": "28px", "fontWeight": "600"}],
+                        "label-md": ["12px", {"lineHeight": "16px", "letterSpacing": "0.5px", "fontWeight": "500"}],
+                        "body-lg": ["16px", {"lineHeight": "24px", "fontWeight": "400"}]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .chart-bar-animate {
+            transition: height 1s ease-out;
+        }
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-background min-h-screen flex overflow-x-hidden">
+<!-- Navigation Drawer (Desktop) -->
+<aside class="hidden md:flex flex-col h-screen sticky top-0 w-80 bg-surface-container-low shadow-xl rounded-r-xl p-md gap-sm z-50">
+<div class="flex items-center gap-md px-md py-lg">
+<img alt="Logo" class="w-10 h-10 rounded-lg" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBXqhR6ePjDlfu6CMiLkZoUNslUYt7uHmquZXg7UJy-pW9U2PjizIA8-M9BWNWNcpwvLfuEFlyK-uto24S96WwLTRt-71BhJXHSOeibGzQ70Xtpsv90yhs86CwQSW0dfb_iMnFgb9X9ZIyWzSn-gCuINeylrpi9Va23OZQYf5rSsAQ-cqjD59QoW9axBKqjBxUfwEMECD1rXKQ5LLs7JJXkDo2dCiUU-5Gidv97nJEybDvDufBvGaz5hT3Hbj-w1vvebctRPY2rtH6j"/>
+<div>
+<h2 class="font-headline-lg text-headline-lg text-primary leading-tight">Masjid Admin</h2>
+<p class="font-body-md text-body-md text-on-surface-variant">Central Management</p>
+</div>
+</div>
+<nav class="flex-1 space-y-2 mt-md">
+<a class="flex items-center gap-md px-md py-3 text-on-surface-variant hover:bg-surface-container-high transition-colors duration-200 rounded-lg font-body-md text-body-md" href="#">
+<span class="material-symbols-outlined">account_balance_wallet</span> Budget Management
+            </a>
+<a class="flex items-center gap-md px-md py-3 text-on-surface-variant hover:bg-surface-container-high transition-colors duration-200 rounded-lg font-body-md text-body-md" href="#">
+<span class="material-symbols-outlined">history_edu</span> User Audit
+            </a>
+<a class="flex items-center gap-md px-md py-3 bg-secondary-container text-on-secondary-container font-bold rounded-lg font-body-md text-body-md" href="#">
+<span class="material-symbols-outlined">receipt_long</span> Bills &amp; Utilities
+            </a>
+<a class="flex items-center gap-md px-md py-3 text-on-surface-variant hover:bg-surface-container-high transition-colors duration-200 rounded-lg font-body-md text-body-md" href="#">
+<span class="material-symbols-outlined">monitoring</span> App Analytics
+            </a>
+<a class="flex items-center gap-md px-md py-3 text-on-surface-variant hover:bg-surface-container-high transition-colors duration-200 rounded-lg font-body-md text-body-md" href="#">
+<span class="material-symbols-outlined">dark_mode</span> Theme Settings
+            </a>
+</nav>
+<div class="mt-auto border-t border-outline-variant/30 pt-md">
+<a class="flex items-center gap-md px-md py-3 text-error hover:bg-error-container transition-colors duration-200 rounded-lg font-body-md text-body-md" href="#">
+<span class="material-symbols-outlined">logout</span> Logout
+            </a>
+<p class="px-md mt-sm font-label-md text-label-md text-outline">v1.0.4</p>
+</div>
+</aside>
+<!-- Main Content Canvas -->
+<main class="flex-1 min-w-0 flex flex-col pb-24 md:pb-0">
+<!-- TopAppBar -->
+<header class="sticky top-0 z-40 bg-surface/80 backdrop-blur-md shadow-sm h-16 flex justify-between items-center w-full px-margin-mobile md:px-margin-tablet">
+<div class="flex items-center gap-sm">
+<div class="w-10 h-10 rounded-full bg-primary-container flex items-center justify-center text-on-primary-container">
+<span class="material-symbols-outlined">person</span>
+</div>
+<h1 class="font-title-lg text-title-lg text-primary">Assalamu Alaikum</h1>
+</div>
+<div class="flex items-center gap-sm">
+<button class="w-10 h-10 flex items-center justify-center rounded-full hover:bg-surface-container transition-all active:scale-95">
+<span class="material-symbols-outlined text-primary">notifications</span>
+</button>
+</div>
+</header>
+<!-- Content Area -->
+<div class="flex-1 px-margin-mobile md:px-margin-tablet py-lg overflow-y-auto">
+<!-- Page Header -->
+<div class="mb-xl flex flex-col md:flex-row md:items-end justify-between gap-md">
+<div>
+<h2 class="font-display-lg text-display-lg text-on-surface mb-xs">Bills &amp; Utilities</h2>
+<p class="font-body-lg text-body-lg text-on-surface-variant">Manage monthly expenditures and consumption tracking.</p>
+</div>
+<button class="bg-primary text-on-primary px-lg py-3 rounded-xl flex items-center gap-sm font-title-small shadow-md active:scale-95 transition-all">
+<span class="material-symbols-outlined">add</span> Upload New Bill
+                </button>
+</div>
+<!-- Multi-tab Controller -->
+<div class="flex p-1 bg-surface-container rounded-2xl mb-lg w-full md:w-fit">
+<button class="flex-1 md:flex-none px-xl py-3 rounded-xl bg-white shadow-sm text-primary font-bold transition-all duration-300" id="tab-electricity" onclick="switchTab('electricity')">
+<span class="flex items-center gap-sm justify-center">
+<span class="material-symbols-outlined">bolt</span> Electricity
+                    </span>
+</button>
+<button class="flex-1 md:flex-none px-xl py-3 rounded-xl text-on-surface-variant hover:bg-surface-container-high transition-all duration-300" id="tab-water" onclick="switchTab('water')">
+<span class="flex items-center gap-sm justify-center">
+<span class="material-symbols-outlined">water_drop</span> Water
+                    </span>
+</button>
+<button class="flex-1 md:flex-none px-xl py-3 rounded-xl text-on-surface-variant hover:bg-surface-container-high transition-all duration-300" id="tab-gas" onclick="switchTab('gas')">
+<span class="flex items-center gap-sm justify-center">
+<span class="material-symbols-outlined">mode_fan</span> Gas
+                    </span>
+</button>
+</div>
+<!-- Current Status Banner & Summary Blocks -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-lg mb-xl">
+<!-- Current Cycle Banner (Primary Focal Point) -->
+<div class="md:col-span-2 bg-primary rounded-2xl p-xl text-on-primary shadow-xl relative overflow-hidden flex flex-col md:flex-row justify-between items-center gap-lg">
+<div class="relative z-10 text-center md:text-left">
+<span class="bg-primary-container text-on-primary-container px-3 py-1 rounded-full font-label-md text-label-md mb-md inline-block uppercase tracking-wider">Current Cycle</span>
+<h3 class="font-headline-lg text-headline-lg mb-xs">October 2023</h3>
+<div class="flex items-center gap-sm justify-center md:justify-start">
+<span class="material-symbols-outlined text-secondary-fixed">pending_actions</span>
+<span class="font-body-lg text-body-lg text-primary-fixed">Status: <span class="font-bold">Pending Payment</span></span>
+</div>
+</div>
+<div class="relative z-10 text-center md:text-right bg-white/10 backdrop-blur-md p-lg rounded-2xl border border-white/10">
+<p class="font-label-md text-label-md text-on-primary-container/80 mb-1">Total Amount Due</p>
+<p class="font-display-lg text-display-lg text-white">$1,240.50</p>
+<p class="font-body-md text-body-md text-primary-fixed mt-2 italic">Due in 4 days (Oct 30)</p>
+</div>
+<!-- Abstract Background Pattern -->
+<div class="absolute right-0 top-0 w-64 h-64 bg-white/5 rounded-full -mr-20 -mt-20 blur-3xl"></div>
+</div>
+<!-- Usage Comparison Card -->
+<div class="bg-surface-container-high rounded-2xl p-xl border border-outline-variant/30 flex flex-col justify-center">
+<p class="font-label-md text-label-md text-on-surface-variant mb-md uppercase tracking-widest">Vs. Last Month</p>
+<div class="flex items-center gap-md">
+<div class="p-3 bg-error-container rounded-full text-error">
+<span class="material-symbols-outlined">trending_up</span>
+</div>
+<div>
+<p class="font-headline-lg text-headline-lg text-on-surface">+12.4%</p>
+<p class="font-body-md text-body-md text-on-surface-variant">Consumption increase</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Bento Layout for Analytics & History -->
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-lg">
+<!-- Historical Usage Bar Chart (Bento Large) -->
+<div class="lg:col-span-2 bg-white rounded-2xl p-xl shadow-sm border border-outline-variant/20 flex flex-col h-[400px]">
+<div class="flex justify-between items-center mb-xl">
+<h4 class="font-title-lg text-title-lg text-on-surface">Usage Trend (6 Months)</h4>
+<div class="flex gap-2">
+<span class="flex items-center gap-1 font-label-md text-label-md text-on-surface-variant">
+<span class="w-3 h-3 bg-primary rounded-full"></span> kWh
+                            </span>
+</div>
+</div>
+<div class="flex-1 flex items-end justify-between gap-4 px-2">
+<!-- Bar Apr -->
+<div class="flex-1 flex flex-col items-center gap-2 group cursor-pointer">
+<div class="w-full bg-primary/10 rounded-t-lg group-hover:bg-primary/20 transition-all chart-bar-animate" style="height: 60%"></div>
+<span class="font-label-md text-label-md text-on-surface-variant">Apr</span>
+</div>
+<!-- Bar May -->
+<div class="flex-1 flex flex-col items-center gap-2 group cursor-pointer">
+<div class="w-full bg-primary/10 rounded-t-lg group-hover:bg-primary/20 transition-all chart-bar-animate" style="height: 45%"></div>
+<span class="font-label-md text-label-md text-on-surface-variant">May</span>
+</div>
+<!-- Bar Jun -->
+<div class="flex-1 flex flex-col items-center gap-2 group cursor-pointer">
+<div class="w-full bg-primary/10 rounded-t-lg group-hover:bg-primary/20 transition-all chart-bar-animate" style="height: 85%"></div>
+<span class="font-label-md text-label-md text-on-surface-variant">Jun</span>
+</div>
+<!-- Bar Jul -->
+<div class="flex-1 flex flex-col items-center gap-2 group cursor-pointer">
+<div class="w-full bg-primary/10 rounded-t-lg group-hover:bg-primary/20 transition-all chart-bar-animate" style="height: 70%"></div>
+<span class="font-label-md text-label-md text-on-surface-variant">Jul</span>
+</div>
+<!-- Bar Aug -->
+<div class="flex-1 flex flex-col items-center gap-2 group cursor-pointer">
+<div class="w-full bg-primary/10 rounded-t-lg group-hover:bg-primary/20 transition-all chart-bar-animate" style="height: 55%"></div>
+<span class="font-label-md text-label-md text-on-surface-variant">Aug</span>
+</div>
+<!-- Bar Sep -->
+<div class="flex-1 flex flex-col items-center gap-2 group cursor-pointer">
+<div class="w-full bg-primary rounded-t-lg group-hover:bg-primary/90 transition-all chart-bar-animate" style="height: 95%"></div>
+<span class="font-label-md text-label-md text-primary font-bold">Sep</span>
+</div>
+</div>
+</div>
+<!-- Scannable Summary Blocks for Past Cycles -->
+<div class="bg-white rounded-2xl p-xl shadow-sm border border-outline-variant/20 flex flex-col overflow-hidden">
+<h4 class="font-title-lg text-title-lg text-on-surface mb-lg">Payment History</h4>
+<div class="space-y-4 overflow-y-auto max-h-[300px] pr-2">
+<!-- History Item 1 -->
+<div class="p-md bg-surface-container-low rounded-xl border border-transparent hover:border-primary/20 transition-all group flex justify-between items-center">
+<div class="flex items-center gap-md">
+<div class="w-10 h-10 rounded-full bg-green-100 flex items-center justify-center text-green-700">
+<span class="material-symbols-outlined text-[20px]" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+</div>
+<div>
+<p class="font-body-lg text-body-lg font-semibold text-on-surface">September 2023</p>
+<p class="font-label-md text-label-md text-on-surface-variant">Paid on Sep 28</p>
+</div>
+</div>
+<div class="text-right">
+<p class="font-body-lg text-body-lg font-bold text-on-surface">$1,102.00</p>
+<span class="material-symbols-outlined text-on-surface-variant text-[18px] opacity-0 group-hover:opacity-100 transition-opacity">download</span>
+</div>
+</div>
+<!-- History Item 2 -->
+<div class="p-md bg-surface-container-low rounded-xl border border-transparent hover:border-primary/20 transition-all group flex justify-between items-center">
+<div class="flex items-center gap-md">
+<div class="w-10 h-10 rounded-full bg-green-100 flex items-center justify-center text-green-700">
+<span class="material-symbols-outlined text-[20px]" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+</div>
+<div>
+<p class="font-body-lg text-body-lg font-semibold text-on-surface">August 2023</p>
+<p class="font-label-md text-label-md text-on-surface-variant">Paid on Aug 25</p>
+</div>
+</div>
+<div class="text-right">
+<p class="font-body-lg text-body-lg font-bold text-on-surface">$980.15</p>
+<span class="material-symbols-outlined text-on-surface-variant text-[18px] opacity-0 group-hover:opacity-100 transition-opacity">download</span>
+</div>
+</div>
+<!-- History Item 3 -->
+<div class="p-md bg-surface-container-low rounded-xl border border-transparent hover:border-primary/20 transition-all group flex justify-between items-center">
+<div class="flex items-center gap-md">
+<div class="w-10 h-10 rounded-full bg-green-100 flex items-center justify-center text-green-700">
+<span class="material-symbols-outlined text-[20px]" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+</div>
+<div>
+<p class="font-body-lg text-body-lg font-semibold text-on-surface">July 2023</p>
+<p class="font-label-md text-label-md text-on-surface-variant">Paid on Jul 26</p>
+</div>
+</div>
+<div class="text-right">
+<p class="font-body-lg text-body-lg font-bold text-on-surface">$1,050.40</p>
+<span class="material-symbols-outlined text-on-surface-variant text-[18px] opacity-0 group-hover:opacity-100 transition-opacity">download</span>
+</div>
+</div>
+</div>
+<button class="mt-lg w-full py-2 font-label-md text-label-md text-primary border border-primary/20 rounded-lg hover:bg-primary/5 transition-all">
+                        View All Statements
+                    </button>
+</div>
+</div>
+<!-- Actionable Insights Card -->
+<div class="mt-xl bg-surface-container-highest/30 border border-outline-variant/30 rounded-2xl p-xl flex flex-col md:flex-row items-center gap-xl relative">
+<div class="w-full md:w-1/3 aspect-video bg-surface-variant rounded-xl overflow-hidden shadow-inner">
+<img alt="Solar Panels" class="w-full h-full object-cover" data-alt="A clean, professional close-up shot of modern solar panels installed on a white roof, bathed in warm sunset golden hour lighting. The image evokes a sense of sustainability, energy efficiency, and clean technology. The aesthetic is bright, high-key, and premium with soft shadows." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDdKYc2xhCscovhPj9GpkcgiR8c1PesiV4KAZQFzdibpcL8XPyIAW9ShJ6U2aNoV0fC5fFggoY94lAGkEaavUl-k55m2fcytuekfKvp8WB8jMQo6JZPMXDN_iBsjyeiovrI11emjUpJmcfEfDgKOd5zGoYtQs7egBsrGP2gGjpxsRn88TxJKVB1QCjhLXBBXvjByAhYsDC4HJD-g1ZjopoC-9t0CbXOjIMYm3SNZr7ZCR7c5ICxE2nIY0CZX-JWAL2yYs_KEhAkj5fo"/>
+</div>
+<div class="flex-1">
+<div class="flex items-center gap-sm mb-sm">
+<span class="material-symbols-outlined text-secondary" style="font-variation-settings: 'FILL' 1;">lightbulb</span>
+<h4 class="font-title-lg text-title-lg text-on-surface">Efficiency Recommendation</h4>
+</div>
+<p class="font-body-lg text-body-lg text-on-surface-variant mb-md">
+                        Based on your peak usage during Fajr and Isha hours, installing a smart lighting timer could reduce monthly electricity costs by up to <span class="text-primary font-bold">15%</span>.
+                    </p>
+<button class="text-primary font-bold font-body-md flex items-center gap-sm hover:translate-x-1 transition-transform">
+                        Explore Energy Saving Plan <span class="material-symbols-outlined">arrow_forward</span>
+</button>
+</div>
+</div>
+</div>
+</main>
+<!-- Bottom Navigation Bar (Mobile Only) -->
+<nav class="md:hidden fixed bottom-0 left-0 w-full z-50 bg-surface dark:bg-inverse-surface shadow-[0_-4px_12px_rgba(0,78,45,0.08)] flex justify-around items-center px-2 pb-4 pt-2 rounded-t-xl">
+<a class="flex flex-col items-center justify-center text-on-surface-variant px-4 py-1 transition-transform duration-300 active:scale-90" href="#">
+<span class="material-symbols-outlined">home</span>
+<span class="font-label-md text-label-md">Home</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant px-4 py-1 transition-transform duration-300 active:scale-90" href="#">
+<span class="material-symbols-outlined">volunteer_activism</span>
+<span class="font-label-md text-label-md">Giving</span>
+</a>
+<!-- Mapping "Bills" to Insights for mobile navigation context -->
+<a class="flex flex-col items-center justify-center bg-primary-container text-on-primary-container rounded-full px-4 py-1 transition-transform duration-300 active:scale-90" href="#">
+<span class="material-symbols-outlined">analytics</span>
+<span class="font-label-md text-label-md">Insights</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant px-4 py-1 transition-transform duration-300 active:scale-90" href="#">
+<span class="material-symbols-outlined">person</span>
+<span class="font-label-md text-label-md">Profile</span>
+</a>
+</nav>
+<script>
+        function switchTab(tabId) {
+            const tabs = ['electricity', 'water', 'gas'];
+            tabs.forEach(t => {
+                const btn = document.getElementById('tab-' + t);
+                if (t === tabId) {
+                    btn.classList.add('bg-white', 'shadow-sm', 'text-primary', 'font-bold');
+                    btn.classList.remove('text-on-surface-variant', 'hover:bg-surface-container-high');
+                } else {
+                    btn.classList.remove('bg-white', 'shadow-sm', 'text-primary', 'font-bold');
+                    btn.classList.add('text-on-surface-variant', 'hover:bg-surface-container-high');
+                }
+            });
+            
+            // Micro-interaction: refresh bar chart heights randomly to simulate data change
+            const bars = document.querySelectorAll('.chart-bar-animate');
+            bars.forEach(bar => {
+                const randomHeight = Math.floor(Math.random() * 60) + 30 + '%';
+                bar.style.height = randomHeight;
+            });
+        }
+
+        // Initialize with staggered bar entrance
+        window.addEventListener('load', () => {
+            const bars = document.querySelectorAll('.chart-bar-animate');
+            bars.forEach((bar, index) => {
+                const finalHeight = bar.style.height;
+                bar.style.height = '0%';
+                setTimeout(() => {
+                    bar.style.height = finalHeight;
+                }, 100 * index);
+            });
+        });
+    </script>
+</body></html>

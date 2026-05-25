@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Add Contribution - Masjid Management System</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;family=Inter:wght@400;500;600&amp;family=JetBrains+Mono:wght@500&amp;family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "inverse-on-surface": "#eaf1ff",
+                        "inverse-surface": "#213145",
+                        "background": "#f8f9ff",
+                        "secondary": "#735c00",
+                        "on-primary-fixed": "#002110",
+                        "primary": "#004e2d",
+                        "on-error": "#ffffff",
+                        "surface-container-lowest": "#ffffff",
+                        "surface-dim": "#cbdbf5",
+                        "on-tertiary-fixed": "#001e2d",
+                        "primary-container": "#00693e",
+                        "on-secondary-fixed": "#241a00",
+                        "inverse-primary": "#82d8a3",
+                        "surface": "#f8f9ff",
+                        "surface-container-highest": "#d3e4fe",
+                        "on-secondary-container": "#745c00",
+                        "surface-variant": "#d3e4fe",
+                        "tertiary-container": "#415f71",
+                        "surface-bright": "#f8f9ff",
+                        "primary-fixed-dim": "#82d8a3",
+                        "secondary-fixed": "#ffe088",
+                        "surface-tint": "#086c41",
+                        "on-tertiary": "#ffffff",
+                        "on-secondary-fixed-variant": "#574500",
+                        "secondary-fixed-dim": "#e9c349",
+                        "outline-variant": "#bec9bf",
+                        "primary-fixed": "#9ef5be",
+                        "on-primary-container": "#8fe6af",
+                        "on-tertiary-container": "#b9d8ed",
+                        "secondary-container": "#fed65b",
+                        "on-error-container": "#93000a",
+                        "on-background": "#0b1c30",
+                        "tertiary": "#294759",
+                        "surface-container-low": "#eff4ff",
+                        "on-secondary": "#ffffff",
+                        "error": "#ba1a1a",
+                        "tertiary-fixed-dim": "#accbe0",
+                        "on-primary-fixed-variant": "#00522f",
+                        "on-surface": "#0b1c30",
+                        "surface-container-high": "#dce9ff",
+                        "tertiary-fixed": "#c8e7fd",
+                        "surface-container": "#e5eeff",
+                        "outline": "#6f7a71",
+                        "on-primary": "#ffffff",
+                        "error-container": "#ffdad6",
+                        "on-tertiary-fixed-variant": "#2c4a5c",
+                        "on-surface-variant": "#3f4941"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "margin-mobile": "16px",
+                        "base": "4px",
+                        "sm": "8px",
+                        "margin-tablet": "32px",
+                        "xl": "32px",
+                        "xxl": "48px",
+                        "md": "16px",
+                        "lg": "24px",
+                        "xs": "4px",
+                        "gutter": "16px"
+                    },
+                    "fontFamily": {
+                        "display-lg": ["Plus Jakarta Sans"],
+                        "label-md": ["JetBrains Mono"],
+                        "title-lg": ["Plus Jakarta Sans"],
+                        "headline-lg-mobile": ["Plus Jakarta Sans"],
+                        "headline-lg": ["Plus Jakarta Sans"],
+                        "body-md": ["Inter"],
+                        "body-lg": ["Inter"]
+                    },
+                    "fontSize": {
+                        "display-lg": ["40px", {"lineHeight": "48px", "letterSpacing": "-1px", "fontWeight": "700"}],
+                        "label-md": ["12px", {"lineHeight": "16px", "letterSpacing": "0.5px", "fontWeight": "500"}],
+                        "title-lg": ["22px", {"lineHeight": "28px", "fontWeight": "600"}],
+                        "headline-lg-mobile": ["28px", {"lineHeight": "36px", "fontWeight": "600"}],
+                        "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.5px", "fontWeight": "600"}],
+                        "body-md": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                        "body-lg": ["16px", {"lineHeight": "24px", "fontWeight": "400"}]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-background font-body-md min-h-screen pb-24">
+<!-- Top App Bar -->
+<header class="bg-surface/80 backdrop-blur-md shadow-sm docked full-width top-0 flex justify-between items-center w-full px-margin-mobile h-16 sticky z-50">
+<div class="flex items-center gap-md">
+<button class="transition-all duration-200 active:scale-95 text-on-surface-variant p-2 rounded-full hover:bg-surface-container">
+<span class="material-symbols-outlined">arrow_back</span>
+</button>
+<h1 class="font-title-lg text-title-lg text-primary">Add Contribution</h1>
+</div>
+<div class="flex items-center gap-sm">
+<div class="w-10 h-10 rounded-full bg-primary-fixed flex items-center justify-center overflow-hidden">
+<img alt="Admin Profile" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAr3dNY58M2cWjSM1aQm9txoDEleF-gUntbN_GS_-DyjoBE36Ds0IFNmKDlR3UAI6wspYDVLOAGMa9G9ny3pa-gyYRe4qBkRhDBJU-XYTbcQaOlVHzpNlysFx87xefkahz10RpLFnMA6sEuB0uqEuzuSvfqA2eBLhRPbisUbfKZHeJe6dWFno9_QJOG6E_V7NT_kt1V06apFzgANGeCcU7TKVDygHyUcSxstDrCoWh2kNFtcZSYXbPOulR8KDqd6HNevkqfwI__XGvx"/>
+</div>
+</div>
+</header>
+<main class="max-w-xl mx-auto px-margin-mobile pt-lg">
+<!-- Instructional Header -->
+<div class="mb-lg">
+<h2 class="font-headline-lg-mobile text-headline-lg-mobile text-on-background mb-base">New Entry</h2>
+<p class="text-on-surface-variant font-body-md">Record a new contribution to the Masjid funds. Please ensure all details are accurate.</p>
+</div>
+<!-- Form Container -->
+<form class="space-y-lg" id="contributionForm">
+<!-- Contributor Search -->
+<div class="space-y-sm">
+<label class="font-label-md text-label-md text-on-surface-variant ml-1">CONTRIBUTOR</label>
+<div class="relative">
+<span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-outline">person_search</span>
+<input class="w-full pl-12 pr-4 py-4 bg-surface-container-low border-none rounded-xl focus:ring-2 focus:ring-primary text-body-lg placeholder:text-outline-variant transition-all" placeholder="Search by name or ID (e.g. M-1024)" type="text"/>
+</div>
+</div>
+<!-- Bento Layout for Amount and Date -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-md">
+<!-- Amount Field -->
+<div class="space-y-sm">
+<label class="font-label-md text-label-md text-on-surface-variant ml-1">AMOUNT</label>
+<div class="relative group">
+<div class="absolute left-4 top-1/2 -translate-y-1/2 font-title-lg text-primary-container">$</div>
+<input class="w-full pl-10 pr-4 py-4 bg-surface-container-low border-none rounded-xl focus:ring-2 focus:ring-primary text-display-lg font-display-lg placeholder:text-outline-variant transition-all" placeholder="0.00" step="0.01" type="number"/>
+</div>
+</div>
+<!-- Date Picker -->
+<div class="space-y-sm">
+<label class="font-label-md text-label-md text-on-surface-variant ml-1">CONTRIBUTION DATE</label>
+<div class="relative">
+<span class="material-symbols-outlined absolute right-4 top-1/2 -translate-y-1/2 text-outline">calendar_today</span>
+<input class="w-full px-4 py-4 bg-surface-container-low border-none rounded-xl focus:ring-2 focus:ring-primary text-body-lg transition-all appearance-none" id="date_picker" type="date"/>
+</div>
+</div>
+</div>
+<!-- Category Selector (Visual Chips) -->
+<div class="space-y-sm">
+<label class="font-label-md text-label-md text-on-surface-variant ml-1">CATEGORY</label>
+<div class="flex flex-wrap gap-sm">
+<button class="category-chip px-lg py-sm rounded-full bg-secondary-container text-on-secondary-container border-2 border-transparent active:scale-95 transition-all font-body-md flex items-center gap-xs" onclick="selectCategory(this)" type="button">
+<span class="material-symbols-outlined text-[18px]">volunteer_activism</span> Sadaka
+                    </button>
+<button class="category-chip px-lg py-sm rounded-full bg-surface-container-high text-on-surface-variant border-2 border-transparent hover:bg-surface-container-highest active:scale-95 transition-all font-body-md flex items-center gap-xs" onclick="selectCategory(this)" type="button">
+<span class="material-symbols-outlined text-[18px]">account_balance</span> Zakat
+                    </button>
+<button class="category-chip px-lg py-sm rounded-full bg-surface-container-high text-on-surface-variant border-2 border-transparent hover:bg-surface-container-highest active:scale-95 transition-all font-body-md flex items-center gap-xs" onclick="selectCategory(this)" type="button">
+<span class="material-symbols-outlined text-[18px]">construction</span> Building Fund
+                    </button>
+<button class="category-chip px-lg py-sm rounded-full bg-surface-container-high text-on-surface-variant border-2 border-transparent hover:bg-surface-container-highest active:scale-95 transition-all font-body-md flex items-center gap-xs" onclick="selectCategory(this)" type="button">
+<span class="material-symbols-outlined text-[18px]">school</span> Madrasa
+                    </button>
+</div>
+</div>
+<!-- Additional Notes (Optional) -->
+<div class="space-y-sm pt-base">
+<label class="font-label-md text-label-md text-on-surface-variant ml-1">NOTES (OPTIONAL)</label>
+<textarea class="w-full p-4 bg-surface-container-low border-none rounded-xl focus:ring-2 focus:ring-primary text-body-md placeholder:text-outline-variant transition-all" placeholder="Add specific details or dedication..." rows="3"></textarea>
+</div>
+<!-- Action Buttons -->
+<div class="grid grid-cols-2 gap-md pt-lg">
+<button class="py-4 rounded-xl border-2 border-outline/20 text-on-surface font-title-lg hover:bg-surface-container-high transition-all active:scale-95" type="button">
+                    Cancel
+                </button>
+<button class="py-4 rounded-xl bg-primary text-on-primary font-title-lg shadow-lg hover:shadow-primary/20 hover:bg-primary-container transition-all active:scale-95" type="submit">
+                    Save Contribution
+                </button>
+</div>
+</form>
+<!-- Contextual Success Tip -->
+<div class="mt-xxl p-lg bg-primary-fixed/30 rounded-2xl border border-primary-fixed-dim flex gap-md items-start">
+<span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 1;">info</span>
+<div class="space-y-xs">
+<h4 class="font-body-lg font-bold text-on-primary-fixed">Automated Receipt</h4>
+<p class="text-on-surface-variant text-body-md">Upon saving, a digital receipt will be automatically sent to the contributor's registered email and mobile number.</p>
+</div>
+</div>
+</main>
+<!-- Bottom Nav Bar (Suppressed on focus screens but kept for navigation context logic) -->
+<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-2 pb-4 pt-2 bg-surface dark:bg-inverse-surface shadow-[0_-4px_12px_rgba(0,78,45,0.08)] rounded-t-xl md:hidden">
+<a class="flex flex-col items-center justify-center text-on-surface-variant px-4 py-1 transition-transform duration-300 active:scale-90" href="#">
+<span class="material-symbols-outlined">home</span>
+<span class="font-label-md text-label-md">Home</span>
+</a>
+<a class="flex flex-col items-center justify-center bg-primary-container text-on-primary-container rounded-full px-4 py-1 transition-transform duration-300 active:scale-90" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">volunteer_activism</span>
+<span class="font-label-md text-label-md">Giving</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant px-4 py-1 transition-transform duration-300 active:scale-90" href="#">
+<span class="material-symbols-outlined">analytics</span>
+<span class="font-label-md text-label-md">Insights</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant px-4 py-1 transition-transform duration-300 active:scale-90" href="#">
+<span class="material-symbols-outlined">person</span>
+<span class="font-label-md text-label-md">Profile</span>
+</a>
+</nav>
+<script>
+        // Default to current date
+        document.addEventListener('DOMContentLoaded', () => {
+            const today = new Date().toISOString().split('T')[0];
+            document.getElementById('date_picker').value = today;
+        });
+
+        // Category chip selection logic
+        function selectCategory(btn) {
+            // Reset all chips
+            document.querySelectorAll('.category-chip').forEach(chip => {
+                chip.classList.remove('bg-secondary-container', 'text-on-secondary-container', 'border-primary');
+                chip.classList.add('bg-surface-container-high', 'text-on-surface-variant');
+            });
+            
+            // Highlight selected chip
+            btn.classList.remove('bg-surface-container-high', 'text-on-surface-variant');
+            btn.classList.add('bg-secondary-container', 'text-on-secondary-container', 'border-primary');
+            
+            // Micro-interaction
+            btn.animate([
+                { transform: 'scale(1)' },
+                { transform: 'scale(0.95)' },
+                { transform: 'scale(1)' }
+            ], { duration: 200 });
+        }
+
+        // Form submission micro-interaction
+        document.getElementById('contributionForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const btn = e.target.querySelector('button[type="submit"]');
+            const originalText = btn.innerHTML;
+            btn.innerHTML = '<span class="material-symbols-outlined animate-spin">refresh</span> Saving...';
+            btn.disabled = true;
+            
+            setTimeout(() => {
+                btn.innerHTML = '<span class="material-symbols-outlined">check_circle</span> Success';
+                btn.classList.remove('bg-primary');
+                btn.classList.add('bg-green-600');
+                
+                setTimeout(() => {
+                    btn.innerHTML = originalText;
+                    btn.classList.add('bg-primary');
+                    btn.classList.remove('bg-green-600');
+                    btn.disabled = false;
+                }, 2000);
+            }, 1500);
+        });
+    </script>
+</body></html>
