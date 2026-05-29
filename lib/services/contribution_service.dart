@@ -12,7 +12,9 @@ class ContributionService {
     int page = 0,
     int limit = 20,
   }) async {
-    var query = _client.from('contributions').select();
+    // Explicitly select audit columns so the model can populate them
+    var query = _client.from('contributions').select(
+      'id, contributor_name, amount, remarks, contribution_date, contribution_time, added_by, created_at, updated_at');
 
     if (searchQuery.isNotEmpty) {
       query = query.ilike('contributor_name', '%$searchQuery%');

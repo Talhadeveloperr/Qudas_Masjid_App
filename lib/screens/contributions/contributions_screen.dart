@@ -189,7 +189,17 @@ class _ContributionsScreenState extends State<ContributionsScreen> {
                                     : "Anonymous Contributor",
                                 style: const TextStyle(fontWeight: FontWeight.bold),
                               ),
-                              subtitle: Text("${item.contributionDate}  •  ${item.contributionTime}"),
+                              subtitle: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text("${item.contributionDate}  •  ${item.contributionTime}"),
+                                  const SizedBox(height: 4),
+                                  Text(
+                                    "Added by: ${item.addedBy ?? 'N/A'}  •  Created: ${item.createdAt != null ? item.createdAt!.toLocal().toString().split('.').first : 'N/A'}  •  Updated: ${item.updatedAt != null ? item.updatedAt!.toLocal().toString().split('.').first : 'N/A'}",
+                                    style: const TextStyle(fontSize: 12, color: Colors.grey),
+                                  ),
+                                ],
+                              ),
                               trailing: Row(
                                 mainAxisSize: MainAxisSize.min,
                                 children: [

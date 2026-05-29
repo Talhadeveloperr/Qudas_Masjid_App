@@ -7,6 +7,8 @@ class Contribution {
   final String contributionDate;
   final String contributionTime;
   final int? addedBy;
+  final DateTime? createdAt;
+  final DateTime? updatedAt;
 
   Contribution({
     this.id,
@@ -16,6 +18,8 @@ class Contribution {
     required this.contributionDate,
     required this.contributionTime,
     this.addedBy,
+    this.createdAt,
+    this.updatedAt,
   });
 
   factory Contribution.fromJson(Map<String, dynamic> json) {
@@ -27,6 +31,8 @@ class Contribution {
       contributionDate: json['contribution_date'] ?? '',
       contributionTime: json['contribution_time'] ?? '',
       addedBy: json['added_by'],
+      createdAt: json['created_at'] != null ? DateTime.tryParse(json['created_at']) : null,
+      updatedAt: json['updated_at'] != null ? DateTime.tryParse(json['updated_at']) : null,
     );
   }
 
@@ -38,7 +44,7 @@ class Contribution {
       'remarks': remarks,
       'contribution_date': contributionDate,
       'contribution_time': contributionTime,
-      'added_by': addedBy,
+      if (addedBy != null) 'added_by': addedBy,
     };
   }
 }
