@@ -1,6 +1,7 @@
 // lib/services/expenditure_service.dart
 import 'package:supabase_flutter/supabase_flutter.dart';
 import '../models/expenditure_model.dart';
+import 'session_service.dart';
 
 class ExpenditureService {
   final _client = Supabase.instance.client;
@@ -10,7 +11,9 @@ class ExpenditureService {
     int page = 0,
     int limit = 20,
   }) async {
-    var query = _client.from('expenditures').select();
+    // Explicitly select the fields we need including audit columns
+    var query = _client.from('expenditures').select(
+      'id, title, details, payment_amount, paid_to, remarks, expenditure_date, expenditure_time, added_by, created_at, updated_at');
 
     if (searchQuery.isNotEmpty) {
       query = query.ilike('title', '%$searchQuery%');
@@ -34,8 +37,21 @@ class ExpenditureService {
   }
 
   Future<void> addExpenditure(Expenditure expenditure) async {
-    print('Adding expenditure: ${expenditure.toJson()}');
-    await _client.from('expenditures').insert(expenditure.toJson());
+    final payload = Map<String, dynamic>.from(expenditure.toJson());
+
+    // Attach added_by from saved session -> app_users.id (if available)
+    try {
+      final username = await SessionService.getUser();
+      if (username != null) {
+        final user = await _client.from('app_users').select('id').eq('username', username).maybeSingle();
+        if (user != null && user['id'] != null) {
+          payload['added_by'] = user['id'];
+        }
+      }
+    } catch (_) {}
+
+    print('Adding expenditure: $payload');
+    await _client.from('expenditures').insert(payload);
   }
 
   Future<void> updateExpenditure(int id, Expenditure expenditure) async {

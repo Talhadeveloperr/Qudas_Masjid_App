@@ -9,6 +9,8 @@ class Expenditure {
   final String expenditureDate;
   final String expenditureTime;
   final int? addedBy;
+  final DateTime? createdAt;
+  final DateTime? updatedAt;
 
   Expenditure({
     this.id,
@@ -20,6 +22,8 @@ class Expenditure {
     required this.expenditureDate,
     required this.expenditureTime,
     this.addedBy,
+    this.createdAt,
+    this.updatedAt,
   });
 
   factory Expenditure.fromJson(Map<String, dynamic> json) {
@@ -33,6 +37,8 @@ class Expenditure {
       expenditureDate: json['expenditure_date'] ?? '',
       expenditureTime: json['expenditure_time'] ?? '',
       addedBy: json['added_by'],
+      createdAt: json['created_at'] != null ? DateTime.tryParse(json['created_at']) : null,
+      updatedAt: json['updated_at'] != null ? DateTime.tryParse(json['updated_at']) : null,
     );
   }
 

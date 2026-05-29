@@ -18,10 +18,11 @@ class ExpenditureDetailScreen extends StatelessWidget {
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
           child: Padding(
             padding: const EdgeInsets.all(20.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisSize: MainAxisSize.min,
-              children: [
+            child: SingleChildScrollView(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisSize: MainAxisSize.min,
+                children: [
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -88,7 +89,8 @@ class ExpenditureDetailScreen extends StatelessWidget {
                   expenditure.remarks?.isNotEmpty == true ? expenditure.remarks! : "No remarks provided.",
                   style: const TextStyle(fontSize: 15, fontStyle: FontStyle.italic),
                 ),
-              ],
+                ],
+              ),
             ),
           ),
         ),

@@ -56,6 +56,7 @@ class _ExpendituresScreenState extends State<ExpendituresScreen> {
         page: _currentPage,
         limit: _pageSize,
       );
+      print('Fetched $data records ');
       final count = await _service.getTotalExpendituresCount(
         searchQuery: _searchController.text,
       );
@@ -193,7 +194,17 @@ class _ExpendituresScreenState extends State<ExpendituresScreen> {
                                 item.title,
                                 style: const TextStyle(fontWeight: FontWeight.bold),
                               ),
-                              subtitle: Text("${item.expenditureDate}  •  ${item.expenditureTime}"),
+                              subtitle: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text("${item.expenditureDate}  •  ${item.expenditureTime}"),
+                                  const SizedBox(height: 4),
+                                  Text(
+                                    "Added by: ${item.addedBy ?? 'N/A'}  •  Created: ${item.createdAt != null ? item.createdAt!.toLocal().toString().split('.').first : 'N/A'}  •  Updated: ${item.updatedAt != null ? item.updatedAt!.toLocal().toString().split('.').first : 'N/A'}",
+                                    style: const TextStyle(fontSize: 12, color: Colors.grey),
+                                  ),
+                                ],
+                              ),
                               trailing: Row(
                                 mainAxisSize: MainAxisSize.min,
                                 children: [

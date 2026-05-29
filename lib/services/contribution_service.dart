@@ -2,6 +2,7 @@
 // qudas/lib/services/contribution_service.dart
 import 'package:supabase_flutter/supabase_flutter.dart';
 import '../models/contribution_model.dart';
+import 'session_service.dart';
 
 class ContributionService {
   final _client = Supabase.instance.client;
@@ -37,8 +38,21 @@ class ContributionService {
   }
 
   Future<void> addContribution(Contribution contribution) async {
-    print('Adding contribution: ${contribution.toJson()}');
-    await _client.from('contributions').insert(contribution.toJson());
+    final payload = Map<String, dynamic>.from(contribution.toJson());
+
+    // Attach added_by from saved session -> app_users.id (if available)
+    try {
+      final username = await SessionService.getUser();
+      if (username != null) {
+        final user = await _client.from('app_users').select('id').eq('username', username).maybeSingle();
+        if (user != null && user['id'] != null) {
+          payload['added_by'] = user['id'];
+        }
+      }
+    } catch (_) {}
+
+    print('Adding contribution: $payload');
+    await _client.from('contributions').insert(payload);
   }
 
   Future<void> updateContribution(int id, Contribution contribution) async {
