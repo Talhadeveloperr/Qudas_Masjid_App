@@ -37,6 +37,7 @@ class ContributionService {
   }
 
   Future<void> addContribution(Contribution contribution) async {
+    print('Adding contribution: ${contribution.toJson()}');
     await _client.from('contributions').insert(contribution.toJson());
   }
 

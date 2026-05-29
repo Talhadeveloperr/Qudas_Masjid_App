@@ -34,6 +34,7 @@ class ExpenditureService {
   }
 
   Future<void> addExpenditure(Expenditure expenditure) async {
+    print('Adding expenditure: ${expenditure.toJson()}');
     await _client.from('expenditures').insert(expenditure.toJson());
   }
 
